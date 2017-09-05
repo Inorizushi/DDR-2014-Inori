@@ -8,7 +8,7 @@ local getOff = 0;
 
 --main backing
 local t = Def.ActorFrame {
-	SetCommand=function(self,params)
+	--[[SetCommand=function(self,params)
 		local song = params.Song
 		local index = params.DrawIndex
 		if song then
@@ -26,7 +26,7 @@ local t = Def.ActorFrame {
 	end;
 	SetOnCommand=function(self)
 		getOn = 1;
-	end;
+	end;]]--
 	Def.Sprite {
 		OnCommand=function(self)
 			self:diffusealpha(1):setsize(174,210)

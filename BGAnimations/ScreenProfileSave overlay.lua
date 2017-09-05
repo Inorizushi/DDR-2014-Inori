@@ -25,12 +25,5 @@ x[#x+1] = Def.Actor {
 	LoadCommand=function() SCREENMAN:GetTopScreen():Continue(); end;
 };
 
-if Is2ndMIX() then
-x[#x+1] = Def.ActorFrame{
-	LoadActor("2nd doors.png")..{
-		InitCommand=cmd(Center);
-	};
-};
-end;
 
 return x;

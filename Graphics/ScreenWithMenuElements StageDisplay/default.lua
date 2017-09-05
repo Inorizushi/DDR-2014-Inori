@@ -28,7 +28,15 @@ if not PREFSMAN:GetPreference("EventMode") then
 				StageIndex = ss:GetStageIndex();
 			end
 			self:pause()
-			self:setstate(StageIndex);
+			if Stage == 'Stage_Final' then
+				self:setstate(4);
+			elseif Stage == 'Stage_Extra1' then
+				self:setstate(5);
+			elseif Stage == 'Stage_Extra2' then
+				self:setstate(6);
+			else
+				self:setstate(StageIndex);
+			end;
 			self:visible( Stage == s );
 		end;
 	};

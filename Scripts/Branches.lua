@@ -7,24 +7,13 @@ function SMOnlineScreen()
 	return "ScreenNetRoom"
 end
 
-function CorrectSSM()
-	Trace "Yes, we get called"
-	if IsStarterMode() then
-		return "ScreenSelectMusicHappy"
-	else
-		local stage = GAMESTATE:GetCurrentStage()
-		Trace(stage)
-		return "ScreenSelectMusic"
-	end
-end
-
 function SelectMusicOrCourse()
 	if IsNetSMOnline() then
 		return "ScreenNetSelectMusic"
 	elseif GAMESTATE:IsCourseMode() then
 		return "ScreenSelectCourse"
 	else
-		return CorrectSSM()
+		return "ScreenSelectMusic"
 	end
 end
 

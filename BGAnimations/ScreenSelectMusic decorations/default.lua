@@ -23,7 +23,6 @@ local function StepsDisplay(pn)
 
 	return t;
 end
-t[#t+1] = StandardDecorationFromFileOptional("AlternateHelpDisplay","AlternateHelpDisplay");
 
 --default difficulty stuff
 local function GetDifListY(d)

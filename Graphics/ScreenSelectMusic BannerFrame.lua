@@ -111,7 +111,7 @@ t[#t+1] = Def.ActorFrame{
       self:playcommand("Set", params);
     end;
   };
-	Def.Sprite {
+	--[[Def.Sprite {
     SetCommand=function(self,params)
     	local song = GAMESTATE:GetCurrentSong();
       if SCREENMAN:GetTopScreen():GetChild('MusicWheel'):GetSelectedType() == 'WheelItemDataType_Random' then
@@ -126,7 +126,7 @@ t[#t+1] = Def.ActorFrame{
     CurrentSongChangedMessageCommand=function(self, params)
       self:playcommand("Set", params);
     end;
-  };
+  };]]--
 }
 
 return t;
