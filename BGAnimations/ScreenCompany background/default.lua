@@ -1,0 +1,53 @@
+local t = Def.ActorFrame{
+	Def.Quad{
+		InitCommand=cmd(FullScreen;diffuse,color("0,0,0,1"));
+	};
+};
+t[#t+1] = Def.ActorFrame{
+	LoadActor("1")..{
+		InitCommand=cmd(Center);
+		OnCommand=cmd(diffusealpha,0;linear,0.2;diffusealpha,1;sleep,1;linear,0.1;diffusealpha,0);
+	};
+	LoadActor("2")..{
+		InitCommand=cmd(Center);
+		OnCommand=cmd(diffusealpha,0;sleep,1.3;linear,0.2;diffusealpha,1;sleep,1;linear,0.1;diffusealpha,0);
+	};
+	LoadActor("3")..{
+		InitCommand=cmd(Center);
+		OnCommand=cmd(diffusealpha,0;sleep,2.6;linear,0.2;diffusealpha,1;sleep,1;linear,0.1;diffusealpha,0);
+	};
+	LoadActor("4")..{
+		InitCommand=cmd(Center);
+		OnCommand=cmd(diffusealpha,0;sleep,3.9;linear,0.2;diffusealpha,1;sleep,1;linear,0.5;diffusealpha,0);
+	};
+	Def.Quad{
+		InitCommand=cmd(FullScreen;diffusealpha,0);
+		OnCommand=cmd(diffusealpha,0;sleep,5.6;linear,0.5;diffusealpha,1;sleep,24;diffusealpha,0);
+	};
+	LoadActor("sound")..{
+		OnCommand=cmd(sleep,5.6;queuecommand,"Play");
+		PlayCommand=cmd(play);
+	};
+	LoadActor("Konami")..{
+		InitCommand=cmd(Center);
+		OnCommand=cmd(diffusealpha,0;sleep,5.6;linear,0.5;diffusealpha,1;sleep,5;linear,0.5;diffusealpha,0);
+	};
+	LoadActor("Bemani")..{
+		InitCommand=cmd(Center);
+		OnCommand=cmd(diffusealpha,0;sleep,11.6;linear,0.5;diffusealpha,1;sleep,5;linear,0.5;diffusealpha,0);
+	};
+	LoadActor("EAmuse")..{
+		InitCommand=cmd(Center);
+		OnCommand=cmd(diffusealpha,0;sleep,17.6;linear,0.5;diffusealpha,1;sleep,5;linear,0.5;diffusealpha,0);
+	};
+	LoadActor("RSA")..{
+		InitCommand=cmd(Center);
+		OnCommand=cmd(diffusealpha,0;sleep,23.6;linear,0.5;diffusealpha,1;sleep,5;linear,0.5;diffusealpha,0);
+	};
+	LoadActor("DDR")..{
+		InitCommand=cmd(Center);
+		OnCommand=cmd(diffusealpha,0;sleep,29.6;linear,0.5;diffusealpha,1;sleep,3;linear,0.2;diffusealpha,0);
+	};
+
+};
+return t;
