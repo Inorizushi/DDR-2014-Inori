@@ -6,7 +6,7 @@ local t = Def.ActorFrame{
 		group = params.Text;
 		local so = GAMESTATE:GetSortOrder();
 			if group then
-				if group == group_name[group] then
+				if group_name[group] ~= nil then
 					self:Load(THEME:GetPathG("","_jackets/group/"..group_name[group]..".png"))
 					self:diffusealpha(1);
 					self:y(-2)
@@ -26,7 +26,7 @@ local t = Def.ActorFrame{
 		local group_extender2 = group_extend[group_extender1];
 			if group then
 				if so == "SortOrder_Group" then
-					if group == group_name[group] then
+					if group_name[group] ~= nil then
 						self:Load(THEME:GetPathG("","_jackets/group/_extend/"..group_extender2..".png"))
 						self:diffusealpha(1)
 						self:x(73):y(-2)
@@ -44,7 +44,7 @@ local t = Def.ActorFrame{
 				SetMessageCommand=function(self,params)
 						group = params.Text;
 				if group then
-					if group==group_name[group] then
+					if group_name[group] ~= nil then
 						self:diffusealpha(0);
 					else
 						self:diffusealpha(1);
@@ -67,7 +67,7 @@ local t = Def.ActorFrame{
 					if params.HasFocus then
 						setenv("getgroupname",pt_text);
 					end;
-					if group==group_name[group] then
+					if group_name[group] ~= nil then
 						self:Load( THEME:GetPathG("","_No banner") );
 						self:diffusealpha(0);
 					else
@@ -88,7 +88,7 @@ local t = Def.ActorFrame{
 			local song = params.Song;
 			group = params.Text;
 		local so = GAMESTATE:GetSortOrder();
-		if group==group_name[group] then
+		if group_name[group] ~= nil then
 			self:settext("");
 		else
 			if so == "SortOrder_Group" then
@@ -107,7 +107,7 @@ local t = Def.ActorFrame{
 				local song = params.Song;
 				group = params.Text;
 			local so = GAMESTATE:GetSortOrder();
-			if group == group_name[group] then
+			if group_name[group] ~= nil then
 				self:settext("");
 			else
 				if so == "SortOrder_Group" then
