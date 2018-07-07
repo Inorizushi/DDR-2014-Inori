@@ -1,5 +1,5 @@
 --SNCharacters v1.1 (13 March 2017)
---version 2 characters added and supported. 
+--version 2 characters added and supported.
 --GetAssetPath added to abstract differences away a bit.
 --GetPathIfValid added to make it so that...
 --most functions won't operate on an invalid character now.
@@ -9,9 +9,10 @@ local c = Characters
 --each line corresponds to a version.
 --v1 represents characters as used in SN2 and X.
 --v2 represents characters as used in X2 on.
-local requiredFiles = 
+local requiredFiles =
 {
 	{"combo.png", "combo100.png"},
+	{"comboA.png", "comboB.png", "combo100.png"},
 	{"comboA.png", "comboB.png", "combo100.png"}
 }
 
@@ -48,9 +49,13 @@ local function ValidateAndProcessConfig(loadedCfg)
     if (loadedCfg.version ~= math.floor(loadedCfg.version)) then
     	return false, "version is not an integer"
     end
-    if (loadedCfg.version > 2) then
+    if (loadedCfg.version > 3) then
         return false, "version too new"
     end
+		local versionNum = loadedCfg.version
+		if (versionNum == 1) or (versionNum == 2) or (versionNum == 3) then
+			loadedCfg.version = versionNum
+		end
     local colorDef = loadedCfg.color
     local colorType = type(colorDef)
     if not ((colorType=="string") or (colorType == "table")) then
@@ -235,7 +240,7 @@ function OptionRowCharacters()
         LoadSelections = function(self, list, pn)
             local pn = ToEnumShortString(pn)
             local env = GAMESTATE:Env()
-            local currentChar = env['X3Character'..pn]
+            local currentChar = env['SNCharacter'..pn]
             if choiceListReverse[currentChar] then
                 list[choiceListReverse[currentChar]+1] = true
             else
@@ -245,7 +250,7 @@ function OptionRowCharacters()
         SaveSelections = function(self, list, pn)
             local pn = ToEnumShortString(pn)
             local env = GAMESTATE:Env()
-            local varName = 'X3Character'..pn
+            local varName = 'SNCharacter'..pn
             for idx, selected in ipairs(list) do
                 if selected then
                     if idx == 1 then

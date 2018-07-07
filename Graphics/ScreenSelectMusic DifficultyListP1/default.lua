@@ -1,6 +1,6 @@
 return Def.ActorFrame {
 	CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong(); 
+		local song = GAMESTATE:GetCurrentSong();
 		if song then
 -- 			self:setaux(0);
 			self:playcommand("TweenOn");
@@ -9,35 +9,25 @@ return Def.ActorFrame {
 			self:playcommand("TweenOff");
 		end;
 	end;
-	-- Def.Quad {
-		-- InitCommand=cmd(y,-14;zoomto,164,2;fadeleft,8/164;faderight,8/164);
-		-- OnCommand=cmd(diffuse,Color("Black");diffusealpha,0;linear,0.35;diffusealpha,0.5);
-	-- };
-	-- Def.Quad {
-		-- InitCommand=cmd(y,24*(5)-10;zoomto,164,2;fadeleft,8/164;faderight,8/164);
-		-- OnCommand=cmd(diffuse,Color("Black");diffusealpha,0;linear,0.35;diffusealpha,0.5);
-	-- };
 	Def.StepsDisplayList {
 		Name="StepsDisplayListRow";
-		
-		
-		
+
+
+
 		CursorP1 = Def.ActorFrame {
-			InitCommand=cmd(x,-80;player,PLAYER_1);
+			InitCommand=cmd(addx,2;addy,-2;draworder,999;horizalign,center;vertalign,middle;player,PLAYER_1);
 			PlayerJoinedMessageCommand=function(self, params)
 				if params.Player == PLAYER_1 then
 					self:visible(true);
-					(cmd(zoom,0;bounceend,0.3;zoom,1))(self);
 				end;
 			end;
 			PlayerUnjoinedMessageCommand=function(self, params)
 				if params.Player == PLAYER_1 then
-					self:visible(true);
-					(cmd(bouncebegin,0.3;zoom,0))(self);
+					self:visible(false);
 				end;
 			end;
-			LoadActor("P1_cursor.png") .. {
-				InitCommand=cmd(x,-65;y,-2;draworder,1;zoom,0.85);
+			LoadActor(THEME:GetPathG("StepsDisplayListRow","highlight")) .. {
+				InitCommand=cmd(blend,Blend.Add;diffuseshift;effectcolor1,color("1,1,1,1");effectcolor2,color("1,1,1,0.5"));
 			};
 		};
 		CursorP2 = Def.ActorFrame {

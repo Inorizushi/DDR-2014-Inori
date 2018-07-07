@@ -1,6 +1,12 @@
 local t = LoadFallbackB();
-
+local args = {...}
+-- the only arg is arg 1, the player number
+local function m(metric)
+	metric = metric:gsub("PN", ToEnumShortString(args[1]))
+	return THEME:GetMetric(Var "LoadingScreen",metric)
+end
 t[#t+1] = StandardDecorationFromFileOptional( "BannerFrame","BannerFrame" );
+
 
 -- Legacy StepMania 4 Function
 --???
@@ -258,11 +264,15 @@ t[#t+1] = LoadActor("arrow.png") .. {
 		InitCommand=cmd(draworder,200;x,SCREEN_CENTER_X+90;y,SCREEN_BOTTOM-160);
 		OnCommand=cmd(bounce;effectmagnitude,8,0,0;effectclock,'beatnooffset');
 		OffCommand=cmd(sleep,0.15;linear,0.15;diffusealpha,0);
+		StartSelectingStepsMessageCommand=cmd(sleep,0.15;linear,0.15;diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,1);
 	};
 t[#t+1] = LoadActor("arrow.png") .. {
 		InitCommand=cmd(draworder,200;x,SCREEN_CENTER_X-90;y,SCREEN_BOTTOM-160;rotationy,180);
 		OnCommand=cmd(bounce;effectmagnitude,-8,0,0;effectclock,'beatnooffset');
 		OffCommand=cmd(sleep,0.15;linear,0.15;diffusealpha,0);
+		StartSelectingStepsMessageCommand=cmd(sleep,0.15;linear,0.15;diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,1);
 	};
 t[#t+1] = LoadActor("press.png") .. {
 		InitCommand=cmd(diffusealpha,0;draworder,201;x,SCREEN_CENTER_X+90;y,SCREEN_BOTTOM-160);
@@ -687,7 +697,7 @@ t[#t+1] = Def.Quad{
 	};
 --group title--
 t[#t+1] = LoadFont("Common Normal")..{
-	InitCommand=cmd(horizalign,left;x,SCREEN_LEFT+100-45;y,SCREEN_BOTTOM-255-25;zoom,0.8;diffuse,color("#ffffff");draworder,999);
+	InitCommand=cmd(horizalign,left;x,SCREEN_LEFT+100-45;y,SCREEN_BOTTOM-255-25;zoom,0.8;diffuse,color("#ffffff");draworder,1);
 	OnCommand=cmd(addx,-300;linear,0.15;addx,300);
 	OffCommand=cmd(linear,0.15;addx,-300);
 	CurrentSongChangedMessageCommand=function(self)
@@ -938,6 +948,8 @@ t[#t+1] = LoadActor("Tip_Song")..{
 	end;
 	OnCommand=cmd(zoomx,0.6;zoomy,0;sleep,3;linear,0.15;zoomy,0.65;bounce;effectmagnitude,0,3,0);
 	OffCommand=cmd(linear,0.15;zoomy,0);
+	StartSelectingStepsMessageCommand=cmd(linear,0.15;zoomy,0);
+	SongUnchosenMessageCommand=cmd(queuecommand,"CurrentSongChanged");
 	};
 
 if GAMESTATE:IsCourseMode() then
@@ -1108,5 +1120,28 @@ InitCommand=cmd(addy,-110);
 	};
 };
 
+t[#t+1] = Def.ActorFrame{
+	LoadActor("base")..{
+		InitCommand=cmd(Center;diffusealpha,0;draworder,20);
+		StartSelectingStepsMessageCommand=cmd(diffusealpha,0);
+		SongUnchosenMessageCommand=cmd(diffusealpha,0)
+	};
+};
+
+
+t[#t+1] = Def.ActorFrame{
+	StartSelectingStepsMessageCommand=cmd(finishtweening;linear,0.2;addx,500);
+	SongUnchosenMessageCommand=cmd(finishtweening;linear,0.3;addx,-500);
+	OnCommand=cmd(addx,-500);
+	OffCommand=cmd(finishtweening;linear,0.3;addx,-500);
+	LoadActor("DifficultyList/backer")..{
+		InitCommand = function(s) s:draworder(100):
+			x(SCREEN_CENTER_X-384):y(SCREEN_CENTER_Y)
+		end;
+	};
+};
+
+t[#t+1] = StandardDecorationFromFileOptional("DifficultyListP1","DifficultyListP1");
+t[#t+1] = StandardDecorationFromFileOptional("DifficultyListP2","DifficultyListP2");
 
 return t;

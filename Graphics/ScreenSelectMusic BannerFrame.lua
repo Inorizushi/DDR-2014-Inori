@@ -1,14 +1,11 @@
 local t = Def.ActorFrame{}
-t[#t+1] = Def.Quad{
-	InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y-110-5-15-8;diffusealpha,1;draworder,1;diffuse,color("#000000");setsize,310,310);
-	CurrentSongChangedMessageCommand=cmd(playcommand,"On");
-	OffCommand=cmd(sleep,0.2;bouncebegin,0.175;zoomy,0);
-	Condition=not GAMESTATE:IsCourseMode();
-};
 
 t[#t+1] = Def.ActorFrame {
- 	InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y-110-5-15-8;diffusealpha,1;draworder,1);
+ 	InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y-110-5-15-8;diffusealpha,1;draworder,1;fov,80;rotationx,-40);
 	OffCommand=cmd(sleep,0.2;bouncebegin,0.175;zoomy,0);
+	Def.Quad{
+	 InitCommand=cmd(diffuse,color("#000000");setsize,310,310);
+	};
 	Def.Banner {
 		SetCommand=function(self,params)
 		if not GAMESTATE:IsCourseMode() then

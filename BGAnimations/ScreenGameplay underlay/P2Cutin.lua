@@ -1,40 +1,33 @@
 local env = GAMESTATE:Env()
-local charP2Name = env.X3CharacterP2 or ""
+local charP2Name = env.SNCharacterP2 or ""
 local style = GAMESTATE:GetCurrentStyle():GetStyleType();
 
 local t = Def.ActorFrame{};
 if (charP2Name ~= "") then
-  local charP2Color = (Characters.GetConfig(charP2Name)).color
   local charP2ComboA = Characters.GetAssetPath(charP2Name, "comboA.png")
   local charP2ComboB = Characters.GetAssetPath(charP2Name, "comboB.png")
   local charP2Combo100 = Characters.GetAssetPath(charP2Name, "combo100.png")
+  local charP2Color = (Characters.GetConfig(charP2Name)).color
+  local charP2Ver = (Characters.GetConfig(charP2Name)).version
 
 t[#t+1] = Def.ActorFrame{
   ComboChangedMessageCommand=function(self, params)
     if params.Player ~= 'PlayerNumber_P2' then return end
+    local tapsAndHolds = GAMESTATE:GetCurrentSteps(params.Player):GetRadarValues(params.Player)
+    	:GetValue('RadarCategory_TapsAndHolds')
     local CurCombo = params.PlayerStageStats:GetCurrentCombo()
-    if CurCombo == 25 then
+    if CurCombo == 0 then
+    	return
+    elseif CurCombo == math.floor(tapsAndHolds/2)
+    	or CurCombo == math.floor(tapsAndHolds*0.9) then
       self:queuecommand("PopupB")
       self:queuecommand("Popup")
-    elseif CurCombo == 50 then
-      self:queuecommand("PopupA")
-      self:queuecommand("Popup")
-    elseif CurCombo == 100 then
+    elseif CurCombo % 100 == 0 then
       self:queuecommand("PopupC")
       self:queuecommand("Popup")
-    elseif CurCombo == 150 then
+    elseif CurCombo == 20 or (CurCombo % 50 == 0) then
       self:queuecommand("PopupA")
       self:queuecommand("Popup")
-    elseif (CurCombo % 100) == 0 and CurCombo ~= 0 then
-      self:queuecommand("PopupA")
-      self:queuecommand("Popup")
-    elseif (CurCombo % 25) == 0 and CurCombo ~= 0 then
-      self:queuecommand("PopupB")
-      self:queuecommand("Popup")
-    elseif (CurCombo % 50) == 0 and CurCombo ~= 0 then
-      self:queuecommand("PopupC")
-      self:queuecommand("Popup")
-    elseif CurCombo == 0 then return
     end;
   end;
 
@@ -47,7 +40,6 @@ t[#t+1] = Def.ActorFrame{
       self:blend('BlendMode_NoEffect');
       if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
 			  self:Load(THEME:GetPathB("ScreenGameplay","underlay/Cutin/_Mask_up"));
-        self:y(-3)
 		  else
 			  self:visible(false);
 		  end
@@ -56,7 +48,11 @@ t[#t+1] = Def.ActorFrame{
 -----------------------------
 -- Cutin background --
 LoadActor("Back") .. {
-	InitCommand=cmd(diffusealpha,0;MaskDest);
+  InitCommand=function(self)
+    self:setsize(200,480)
+    self:diffusealpha(0)
+    self:MaskDest();
+  end;
 	PopupCommand=function(self)
 		self:finishtweening();
 		self:linear(0.2);
@@ -73,21 +69,38 @@ Def.Sprite {
   InitCommand=function(self)
     self:MaskDest();
     self:diffusealpha(0);
+    if charP2Ver <= 2 then
+      self:setsize(200,480)
+    else
+      self:scaletoclipped(200,480)
+    end;
     if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
-      self:y(-50)
+      self:y(50)
     end
     self:Load(charP2ComboA)
   end;
   PopupACommand=function(self)
-		self:finishtweening();
-		self:addy(13);
-		self:sleep(0.1);
-		self:linear(0.1);
-		self:diffusealpha(1);
-		self:linear(1);
-		self:addy(-13);
-		self:linear(0.1);
-		self:diffusealpha(0);
+    if charP2Ver <= 2 then
+		 self:finishtweening();
+		 self:y(44);
+		 self:sleep(0.1);
+		 self:linear(0.1);
+		 self:diffusealpha(1);
+		 self:linear(1);
+		 self:y(26);
+		 self:linear(0.1);
+		 self:diffusealpha(0);
+   elseif charP2Ver == 3 then
+      self:finishtweening();
+  		self:addy(13);
+  		self:sleep(0.1);
+  		self:linear(0.1);
+  		self:diffusealpha(1);
+  		self:linear(1);
+  		self:addy(-13);
+  		self:linear(0.1);
+  		self:diffusealpha(0);
+    end;
 	end;
 	PopupBCommand=function(self)
 		self:finishtweening();
@@ -104,22 +117,39 @@ Def.Sprite {
   InitCommand=function(self)
     self:MaskDest();
     self:diffusealpha(0);
+    if charP2Ver <= 2 then
+      self:setsize(200,480)
+    else
+      self:scaletoclipped(200,480)
+    end;
     if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
-      self:y(-50)
+      self:y(50)
     end
     self:Load(charP2ComboB)
   end;
   ----------- use for every 50hit  ex 50 150 250 350 comb etc..
 	PopupBCommand=function(self)
-		self:finishtweening();
-		self:addy(13);
-		self:sleep(0.1);
-		self:linear(0.1);
-		self:diffusealpha(1);
-		self:linear(1);
-		self:addy(-13);
-		self:linear(0.1);
-		self:diffusealpha(0);
+    if charP2Ver <= 2 then
+		 self:finishtweening();
+		 self:y(44);
+		 self:sleep(0.1);
+		 self:linear(0.1);
+		 self:diffusealpha(1);
+		 self:linear(1);
+		 self:y(26);
+		 self:linear(0.1);
+		 self:diffusealpha(0);
+   elseif charP2Ver == 3 then
+      self:finishtweening();
+  		self:addy(13);
+  		self:sleep(0.1);
+  		self:linear(0.1);
+  		self:diffusealpha(1);
+  		self:linear(1);
+  		self:addy(-13);
+  		self:linear(0.1);
+  		self:diffusealpha(0);
+    end;
 	end;
 	PopupACommand=function(self)
 		self:finishtweening();
@@ -136,8 +166,13 @@ Def.Sprite {
   InitCommand=function(self)
     self:MaskDest();
     self:diffusealpha(0);
+    if charP2Ver <= 2 then
+      self:setsize(200,480)
+    else
+      self:scaletoclipped(200,480)
+    end;
     if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
-      self:y(-50)
+      self:y(50)
     end
     self:Load(charP2Combo100)
   end;
@@ -167,13 +202,13 @@ Def.Sprite {
 Def.Quad{
 	InitCommand=function(self)
 		self:MaskDest()
-		self:zoomto(300,720)
 		self:diffusetopedge(color("#000000"))
 		self:diffusebottomedge(unpack(charP2Color))
 		self:diffusealpha(0)
 		self:blend('BlendMode_Add')
+    self:setsize(200,480)
 		if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
-			self:y(-50)
+			self:y(50)
 		end
 	end;
 	PopupCommand=function(self)
@@ -192,7 +227,7 @@ Def.ActorFrame {
 		self:MaskDest()
 	--	self:diffuse(CutInColor())
 		if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
-			self:y(-50)
+			self:y(50)
     end;
 	end;
 	-- Left 1
